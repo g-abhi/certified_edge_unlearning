@@ -169,51 +169,51 @@ if __name__ == '__main__':
                 retrain_loss.append(loss)
 
         # baseline: GraphEraser
-        baseline_time = defaultdict(list)
-        baseline_acc = defaultdict(list)
-        baseline_f1 = defaultdict(list)
-        baseline_shared = defaultdict(list)
-        for num_edges in tqdm(args.edges, desc='baseline'):
-            for partition in ['blpa', 'bekm']:
-                args.partition = partition
-                args.aggr = aggr_method[(args.model, args.data, partition)]
-                base_time, base_acc, base_f1, num_shards = graph_earser.unlearn(
-                    args, data, edges_to_forget[:num_edges], device)
-                baseline_time[partition].append(base_time)
-                baseline_acc[partition].append(base_acc)
-                baseline_f1[partition].append(base_f1)
-                baseline_shared[partition].append(num_shards)
+        # baseline_time = defaultdict(list)
+        # baseline_acc = defaultdict(list)
+        # baseline_f1 = defaultdict(list)
+        # baseline_shared = defaultdict(list)
+        # for num_edges in tqdm(args.edges, desc='baseline'):
+        #     for partition in ['blpa', 'bekm']:
+        #         args.partition = partition
+        #         args.aggr = aggr_method[(args.model, args.data, partition)]
+        #         base_time, base_acc, base_f1, num_shards = graph_earser.unlearn(
+        #             args, data, edges_to_forget[:num_edges], device)
+        #         baseline_time[partition].append(base_time)
+        #         baseline_acc[partition].append(base_acc)
+        #         baseline_f1[partition].append(base_f1)
+        #         baseline_shared[partition].append(num_shards)
 
-        if args.batch_unlearn:
-            unlearn_acc, unlearn_f1, unlearn_loss, unlearn_time = batch_unlearn(
-                args, data, edges_to_forget, args.edges, device)
-        else:
-            unlearn(args, data, edges_to_forget, args.edges, device)
-        print('Result')
-        for idx, num_edges in enumerate(args.edges):
-            if idx % 3 == 0:
-                print(f'  Retrain: Acc:{retrain_acc[idx]:.4f}, Running time: {retrain_time[idx]:.4f}.')
-                print(f'  BLPA: Acc:{baseline_acc["blpa"][idx]:.4f}, Running time: {baseline_time["blpa"][idx]:.4f}.')
-                print(f'  BEKM: Acc:{baseline_acc["bekm"][idx]:.4f}, Running time: {baseline_time["bekm"][idx]:.4f}.')
-                print(f'  Unlearn: Acc:{unlearn_acc[idx]:.4f}, Running time: {unlearn_time[idx]:.4f}.')
+        # if args.batch_unlearn:
+        #     unlearn_acc, unlearn_f1, unlearn_loss, unlearn_time = batch_unlearn(
+        #         args, data, edges_to_forget, args.edges, device)
+        # else:
+        #     unlearn(args, data, edges_to_forget, args.edges, device)
+        # print('Result')
+        # for idx, num_edges in enumerate(args.edges):
+        #     if idx % 3 == 0:
+        #         print(f'  Retrain: Acc:{retrain_acc[idx]:.4f}, Running time: {retrain_time[idx]:.4f}.')
+        #         print(f'  BLPA: Acc:{baseline_acc["blpa"][idx]:.4f}, Running time: {baseline_time["blpa"][idx]:.4f}.')
+        #         print(f'  BEKM: Acc:{baseline_acc["bekm"][idx]:.4f}, Running time: {baseline_time["bekm"][idx]:.4f}.')
+        #         print(f'  Unlearn: Acc:{unlearn_acc[idx]:.4f}, Running time: {unlearn_time[idx]:.4f}.')
 
-        gnn_results_df = pd.DataFrame({
-            'retrain-acc': retrain_acc,
-            'retrain-time': retrain_time,
-            'retrain-f1': retrain_f1,
-            'unlearn-acc': unlearn_acc,
-            'unlearn-time': unlearn_time,
-            'unlearn-f1': unlearn_f1,
-            'blpa-acc': baseline_acc['blpa'],
-            'blpa-time': baseline_time['blpa'],
-            'blpa-f1': baseline_f1['blpa'],
-            'blpa-#-shards': baseline_shared['blpa'],
-            'bekm-acc': baseline_acc['bekm'],
-            'bekm-time': baseline_time['bekm'],
-            'bekm-f1': baseline_f1['bekm'],
-            'bekm-#-shards': baseline_shared['bekm'],
-        }, index=args.edges)
-        gnn_results_df.to_csv(f'{args.model}_{args.data}_rq1.csv')
+        # gnn_results_df = pd.DataFrame({
+        #     'retrain-acc': retrain_acc,
+        #     'retrain-time': retrain_time,
+        #     'retrain-f1': retrain_f1,
+        #     'unlearn-acc': unlearn_acc,
+        #     'unlearn-time': unlearn_time,
+        #     'unlearn-f1': unlearn_f1,
+        #     'blpa-acc': baseline_acc['blpa'],
+        #     'blpa-time': baseline_time['blpa'],
+        #     'blpa-f1': baseline_f1['blpa'],
+        #     'blpa-#-shards': baseline_shared['blpa'],
+        #     'bekm-acc': baseline_acc['bekm'],
+        #     'bekm-time': baseline_time['bekm'],
+        #     'bekm-f1': baseline_f1['bekm'],
+        #     'bekm-#-shards': baseline_shared['bekm'],
+        # }, index=args.edges)
+        # gnn_results_df.to_csv(f'{args.model}_{args.data}_rq1.csv')
 
     if args.rq1:
         edges_to_forget = sample_edges(args, data, method=args.method)

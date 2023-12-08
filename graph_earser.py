@@ -28,7 +28,7 @@ from model import GNN
 from train import train_model
 from data_loader import load_data, CoraDataset
 
-from lib.exp import Exp
+from exp as Exp
 from lib.lib_utils import utils
 from lib.lib_utils.utils import connected_component_subgraphs
 from lib.lib_graph_partition.constrained_lpa_base import ConstrainedLPABase

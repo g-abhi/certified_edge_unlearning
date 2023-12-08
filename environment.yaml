@@ -7,7 +7,7 @@ dependencies:
   - pip=20.3
   - numpy
   - pandas
-  - pytorch
+  - pytorch=2.0.1
   - cudatoolkit
   - torchvision
   - tqdm
@@ -21,3 +21,5 @@ dependencies:
     - deeprobust
     - stellargraph
     - torch_geometric
+    - pytorch-minimize
+    - yacs
