@@ -1,0 +1,23 @@
+name: ceu
+# channels:
+#   - pytorch
+#   - defaults
+dependencies:
+  - python=3.8.5
+  - pip=20.3
+  - numpy
+  - pandas
+  - pytorch
+  - cudatoolkit
+  - torchvision
+  - tqdm
+  - scikit-learn
+  - matplotlib
+  - seaborn
+  # - cudatoolkit=11.0
+  # - pytorch=1.11.0
+  # - torchvision=0.8.1
+  - pip:
+    - deeprobust
+    - stellargraph
+    - torch_geometric
